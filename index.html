@@ -298,19 +298,7 @@
       font-size: 1.05rem;
       font-weight: 600;
       color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
       letter-spacing: -0.01em;
-    }
-
-    .gs1-tag {
-      font-size: 0.72rem;
-      font-weight: 600;
-      background: rgba(0, 113, 227, 0.08);
-      color: var(--accent-primary);
-      padding: 0.15rem 0.45rem;
-      border-radius: 6px;
     }
 
     .field-value {
@@ -1073,12 +1061,9 @@
         
         card.innerHTML = `
           <div class="card-header">
-            <div class="card-info">
               <span class="field-name">
                 ${field.name}
-                <span class="gs1-tag">AI ${field.key}</span>
               </span>
-            </div>
             <button class="btn-copy" onclick="copyValue('${field.value}', this)">
               複製
             </button>
