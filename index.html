@@ -711,25 +711,16 @@
     }
 
     .history-details {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 0.5rem;
-    }
-
-    .history-item {
       display: flex;
       flex-direction: column;
-    }
-
-    .history-label {
-      font-size: 0.68rem;
-      color: var(--text-secondary);
-      font-weight: 500;
+      gap: 0.35rem;
+      font-size: 0.88rem;
+      margin-top: 0.35rem;
     }
 
     .history-val {
       font-family: SFMono-Regular, Consolas, monospace;
-      font-size: 0.8rem;
+      font-size: 0.88rem;
       font-weight: 600;
       color: var(--text-primary);
       word-break: break-all;
@@ -1326,36 +1317,17 @@
         const row = document.createElement('div');
         row.className = 'history-row';
 
-        // 拼接要複製的文字內容 (時間、SN、主要IMEI)
-        const copyText = `時間: ${item.timestamp}\nS/N: ${item.sn}\nIMEI 1: ${item.imei1}\nEID: ${item.eid}`;
-
         row.innerHTML = `
           <div class="history-row-top">
             <span class="history-time">${item.timestamp}</span>
             <div class="history-row-actions">
-              <button class="btn-row-action" onclick="copyHistoryText('${item.id}', this)" data-copy="${item.sn || item.imei1}">複製 S/N</button>
               <button class="btn-row-action btn-row-action-danger" onclick="deleteHistoryItem('${item.id}')">刪除</button>
             </div>
           </div>
           <div class="history-details">
-            ${item.sn ? `
-              <div class="history-item">
-                <span class="history-label">S/N 序號</span>
-                <span class="history-val">${item.sn}</span>
-              </div>
-            ` : ''}
-            ${item.imei1 ? `
-              <div class="history-item">
-                <span class="history-label">主要 IMEI 1</span>
-                <span class="history-val">${item.imei1}</span>
-              </div>
-            ` : ''}
-            ${item.eid ? `
-              <div class="history-item" style="grid-column: span 2;">
-                <span class="history-label">eSIM EID</span>
-                <span class="history-val">${item.eid}</span>
-              </div>
-            ` : ''}
+            ${item.sn ? `<div><span style="color: var(--text-secondary); font-weight: 500;">S/N序號 : </span><span class="history-val">${item.sn}</span></div>` : ''}
+            ${item.imei1 ? `<div><span style="color: var(--text-secondary); font-weight: 500;">主要 IMEI1 : </span><span class="history-val">${item.imei1}</span></div>` : ''}
+            ${item.eid ? `<div><span style="color: var(--text-secondary); font-weight: 500;">eSIM EID : </span><span class="history-val">${item.eid}</span></div>` : ''}
           </div>
         `;
         historyListContainer.appendChild(row);
@@ -1412,7 +1384,7 @@
 
       // UTF-8 BOM, 防止 Excel 開啟中文亂碼
       let csvContent = "\uFEFF";
-      csvContent += "掃描時間,商品條碼(UPC/GTIN),序號(S/N),主要IMEI 1,次要IMEI 2,eSIM EID,商品料號\n";
+      csvContent += "掃描時間,商品條碼(UPC/GTIN),序號(S/N),主要IMEI 1,次要IMEI 2,eSIM EID\n";
 
       history.forEach(item => {
         // 使用 ="數值" 格式防止 Excel 自動把 EID 與 IMEI 轉為科學記號或吃掉前導零
@@ -1422,8 +1394,7 @@
           item.sn ? `="${item.sn}"` : '""',
           item.imei1 ? `="${item.imei1}"` : '""',
           item.imei2 ? `="${item.imei2}"` : '""',
-          item.eid ? `="${item.eid}"` : '""',
-          item.partNumber ? `="${item.partNumber}"` : '""'
+          item.eid ? `="${item.eid}"` : '""'
         ];
         csvContent += row.join(",") + "\n";
       });
