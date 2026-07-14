@@ -1,0 +1,9 @@
+# 忽略機密需求規格與說明文件
+requirment/
+
+# 忽略開發用暫存檔與本地設定
+.gemini/
+.venv/
+node_modules/
+dist/
+*.log
